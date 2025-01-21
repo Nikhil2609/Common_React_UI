@@ -1,0 +1,58 @@
+import React from "react";
+import { styled } from "@mui/material/styles";
+import Button from "@mui/material/Button";
+
+// Define the props for the button component
+interface CommonButtonProps {
+  onClick?: () => void;
+  variant?: "text" | "outlined" | "contained";
+  size?: "small" | "medium" | "large";
+  color?: "primary" | "secondary" | "error" | "info" | "success" | "warning";
+  disabled?: boolean;
+  children: React.ReactNode;
+}
+
+// Styled Material-UI button
+const StyledButton = styled(Button)(({ theme }) => ({
+  textTransform: "none", // Disable uppercase transformation
+  borderRadius: "8px", // Rounded corners
+  padding: "10px 20px", // Default padding
+  fontSize: "16px", // Default font size
+  "&:hover": {
+    boxShadow: theme.shadows[4], // Add shadow on hover
+  },
+  [theme.breakpoints.down("sm")]: {
+    padding: "8px 16px", // Adjust padding for small screens
+    fontSize: "14px",
+  },
+}));
+
+// CommonButton Component
+const CommonButton: React.FC<CommonButtonProps> = ({
+  onClick,
+  variant = "contained",
+  size = "medium",
+  color = "primary",
+  disabled = false,
+  children,
+}) => {
+  return (
+    <StyledButton
+      variant={variant}
+      size={size}
+      color={color}
+      disabled={disabled}
+      onClick={onClick}
+    >
+      {children}
+    </StyledButton>
+  );
+};
+
+export default CommonButton;
+
+      
+      // used Button Component in another screen
+      <CommonButton onClick={handleClick} color="secondary" variant="outlined">
+        Secondary Button
+      </CommonButton>
