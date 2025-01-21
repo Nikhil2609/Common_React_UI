@@ -77,3 +77,13 @@ const CommonTextField: React.FC<CommonTextFieldProps> = ({
 };
 
 export default CommonTextField;
+
+
+{/* TextField with Error */}
+      <CommonTextField
+        label="Email"
+        placeholder="Enter your email"
+        type="email"
+        error={true}
+        helperText="Invalid email address"
+      />
