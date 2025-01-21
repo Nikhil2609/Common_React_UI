@@ -34,3 +34,18 @@ interface DialogueProps {
     cancelBtnClick: Function;
     confirmBtnClick: Function;
 }
+
+    
+        
+        // used when you require for confirmation dialogue
+
+        // <ConfirmationDialogue
+        //   open={deleteBookDialogue}
+        //   title='Delete Book'
+        //   body='Are you sure you want to delete this book?'
+        //   cancelBtnText='Cancel'
+        //   cancelBtnClick={() => toggleDeleteBookPrompt()}
+        //   confirmBtnText='Delete'
+        //   confirmBtnClick={() => handleDeleteBook()}
+        //   closeDialogue={() => toggleDeleteBookPrompt()}
+        // />
