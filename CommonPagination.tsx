@@ -34,6 +34,17 @@ const StyledPagination = (props: PaginationProps) => {
 const PageWrapper = styled(Box)({
     display: "flex",
     padding: "16px",
+    //on hover display highlighted
+    "& .MuiPaginationItem-page:hover": {
+        color: "#684EF3",
+        fontWeight: 700,
+    },
+    //on active page display highlighted
+    "& .MuiPaginationItem-page.Mui-selected": {
+        color: "#684EF3",
+        backgroundColor: "white",
+        fontWeight: 700,
+    },
     "& .pagination-details": {
     paddingRight: "16px",
     color: "#5E6671",
