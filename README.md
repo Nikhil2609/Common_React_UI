@@ -4,3 +4,5 @@
 2) Common Cancel Save Dialogue with Header and body 
 3) Common TextField
 4) Common Button
+5) Common Menu with Action items
+6) Common Pagination
