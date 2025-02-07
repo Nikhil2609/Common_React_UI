@@ -6,3 +6,4 @@
 4) Common Button
 5) Common Menu with Action items
 6) Common Pagination
+7) Common Switch (Styled Switch)
