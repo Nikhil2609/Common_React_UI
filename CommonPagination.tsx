@@ -54,3 +54,16 @@ const PageWrapper = styled(Box)({
 })
 
 export default StyledPagination;
+
+// use of pagination
+<StyledPagination
+    totalPages={totalPages}
+    currentPage={this.state.currentPage}
+    handleChangePage={this.handleChangePage}
+    startIndex={startIndex}
+    endIndex={endIndex}
+    totalResults={totalResults}
+/>
+handleChangePage = (event: React.ChangeEvent<unknown>, newPage: number) => {
+    this.setState({ currentPage: newPage });
+};
