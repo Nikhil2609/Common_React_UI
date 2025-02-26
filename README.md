@@ -9,4 +9,4 @@
 7) Common Pagination
 8) Common Switch (Styled Switch)
 9) Common Snakebar (toast success/error message)
-10) Formik Login form (validation)
+10) Formik + Yup Login form (yup validation + Common TextField used )
