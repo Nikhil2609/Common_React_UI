@@ -7,3 +7,4 @@
 5) Common Menu with Action items
 6) Common Pagination
 7) Common Switch (Styled Switch)
+8) Common Snakebar (toast success/error message)
