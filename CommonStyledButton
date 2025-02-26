@@ -1,58 +1,153 @@
 import React from "react";
-import { styled } from "@mui/material/styles";
-import Button from "@mui/material/Button";
+import { Button, styled, CircularProgress } from "@material-ui/core";
+import { colors } from "../../../blocks/utilities/src/Colors";
 
-// Define the props for the button component
-interface CommonButtonProps {
-  onClick?: () => void;
-  variant?: "text" | "outlined" | "contained";
-  size?: "small" | "medium" | "large";
-  color?: "primary" | "secondary" | "error" | "info" | "success" | "warning";
-  disabled?: boolean;
-  children: React.ReactNode;
+interface Props {
+  onClick: () => void;
+  label: string;
+  variant?: "primary" | "secondary" | "danger";
+  className?: string;
+  isLoading?: boolean;
+  isDisabled?: boolean;
+  type?: "button" | "reset" | "submit";
+  dataTestId: string;
 }
 
-// Styled Material-UI button
-const StyledButton = styled(Button)(({ theme }) => ({
-  textTransform: "none", // Disable uppercase transformation
-  borderRadius: "8px", // Rounded corners
-  padding: "10px 20px", // Default padding
-  fontSize: "16px", // Default font size
-  "&:hover": {
-    boxShadow: theme.shadows[4], // Add shadow on hover
-  },
-  [theme.breakpoints.down("sm")]: {
-    padding: "8px 16px", // Adjust padding for small screens
-    fontSize: "14px",
-  },
-}));
+const CommonButton = (props: Props) => {
+  const {
+    label,
+    variant = "primary",
+    className = "",
+    isLoading = false,
+    isDisabled = false,
+    type = "button",
+    onClick,
+    dataTestId
+  } = props;
 
-// CommonButton Component
-const CommonButton: React.FC<CommonButtonProps> = ({
-  onClick,
-  variant = "contained",
-  size = "medium",
-  color = "primary",
-  disabled = false,
-  children,
-}) => {
+  const returnType = () => {
+    switch (variant) {
+      case "primary":
+        return "primary-button";
+      case "secondary":
+        return "secondary-button";
+      case "danger":
+        return "danger-button";
+    }
+  };
+
+  const returnCircularColor = () => {
+    switch (variant) {
+      case "primary":
+        return "white-circular";
+      case "secondary":
+        return "purpale-circular";
+      case "danger":
+        return "danger-circular";
+    }
+  };
+
   return (
-    <StyledButton
-      variant={variant}
-      size={size}
-      color={color}
-      disabled={disabled}
+    <ButtonComponent
+      data-test-id={dataTestId}
       onClick={onClick}
+      className={returnType() + " " + className + " " + `${isDisabled ? "disabled" : ""}`}
+      disabled={isLoading || isDisabled}
+      variant="outlined"
+      type={type}
     >
-      {children}
-    </StyledButton>
+      {!isLoading ? (
+        label
+      ) : (
+        <CircularProgress size={22} className={returnCircularColor()} />
+      )}
+    </ButtonComponent>
   );
 };
 
+const ButtonComponent = styled(Button)({
+  "&.primary-button": {
+    width: "100%",
+    padding: "10px 16px",
+    borderRadius: 8,
+    textAlign: "center",
+    fontFamily: "DM Sans",
+    fontSize: "16px",
+    lineHeight: "24px",
+    fontWeight: 400,
+    color: colors().white,
+    backgroundColor: colors().majorelleBlue,
+    textTransform: "capitalize",
+    "&:hover": {
+      backgroundColor: colors().buttonHover,
+    },
+  },
+  "&.secondary-button": {
+    width: "100%",
+    padding: "10px 16px",
+    borderRadius: 8,
+    textAlign: "center",
+    fontFamily: "DM Sans",
+    fontSize: "16px",
+    lineHeight: "24px",
+    fontWeight: 400,
+    color: colors().majorelleBlue,
+    backgroundColor: colors().white,
+    border: `1px solid ${colors().majorelleBlue}`,
+    textTransform: "capitalize",
+  },
+  "&.danger-button": {
+    width: "100%",
+    padding: "10px 16px",
+    borderRadius: 8,
+    textAlign: "center",
+    fontFamily: "DM Sans",
+    fontSize: "16px",
+    lineHeight: "24px",
+    fontWeight: 400,
+    color: colors().maximumRed,
+    backgroundColor: colors().deleteButtonBg,
+    border: `1px solid transparent`,
+    textTransform: "capitalize",
+  },
+  "& .white-circular": {
+    color: colors().white,
+  },
+  "& .purpale-circular": {
+    color: colors().majorelleBlue,
+  },
+  "& .danger-circular": {
+    color: colors().maximumRed,
+  },
+  "&.MuiButton-root.Mui-disabled.primary-button": {
+    backgroundColor: colors().majorelleBlue,
+  },
+  "&.MuiButton-root.Mui-disabled.secondary-button": {
+    backgroundColor: colors().white,
+  },
+  "&.MuiButton-root.Mui-disabled.danger-button": {
+    backgroundColor: colors().deleteButtonBg,
+  },
+  "&.MuiButton-root.Mui-disabled.disabled": {
+    backgroundColor: colors().disabledColor,
+    border: `1px solid transparent`,
+    color: colors().white
+  },
+});
+
 export default CommonButton;
 
-      
-      // used Button Component in another screen
-      <CommonButton onClick={handleClick} color="secondary" variant="outlined">
-        Secondary Button
-      </CommonButton>
+// use of common button
+<CommonButton
+  onClick={handleCloseDialog}
+  variant="secondary"
+  label="Cancel"
+  dataTestId={"cancelBtn"}
+/>
+<CommonButton
+  onClick={() => handleDelete()}
+  variant="danger"
+  label="Delete"
+  dataTestId={"confirmDeleteBtn"}
+  isLoading={isLoading} // loading functionality 
+/>
