@@ -1,89 +1,114 @@
-import React from "react";
-import TextField from "@mui/material/TextField";
-import { styled } from "@mui/material/styles";
+import React, { Component } from "react";
+import { Field, FieldProps } from "formik";
+import { TextField, TextFieldProps, Box, Typography, styled } from "@material-ui/core";
+import { colors } from "../../../blocks/utilities/src/Colors";
 
-// Define the props for the common TextField component
-interface CommonTextFieldProps {
+type CustomInputProps = TextFieldProps & {
   label?: string;
+  name: string;
   value?: string;
-  placeholder?: string;
-  type?: string;
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  error?: boolean;
-  helperText?: string;
-  disabled?: boolean;
-  required?: boolean;
-  fullWidth?: boolean;
-  size?: "small" | "medium";
-  variant?: "outlined" | "filled" | "standard";
-}
-
-// Styled Material-UI TextField
-const StyledTextField = styled(TextField)(({ theme }) => ({
-  margin: "10px 0", // Add spacing between fields
-  "& .MuiInputBase-root": {
-    fontSize: "16px", // Default font size
-  },
-  "& .MuiFormLabel-root": {
-    fontSize: "14px", // Label font size
-  },
-  "& .MuiInputBase-input": {
-    padding: "10px", // Input padding
-  },
-  [theme.breakpoints.down("sm")]: {
-    "& .MuiInputBase-root": {
-      fontSize: "14px",
-    },
-    "& .MuiFormLabel-root": {
-      fontSize: "12px",
-    },
-    "& .MuiInputBase-input": {
-      padding: "8px",
-    },
-  },
-}));
-
-// CommonTextField Component
-const CommonTextField: React.FC<CommonTextFieldProps> = ({
-  label,
-  value,
-  placeholder,
-  type = "text",
-  onChange,
-  error = false,
-  helperText,
-  disabled = false,
-  required = false,
-  fullWidth = false,
-  size = "medium",
-  variant = "outlined",
-}) => {
-  return (
-    <StyledTextField
-      label={label}
-      value={value}
-      placeholder={placeholder}
-      type={type}
-      onChange={onChange}
-      error={error}
-      helperText={helperText}
-      disabled={disabled}
-      required={required}
-      fullWidth={fullWidth}
-      size={size}
-      variant={variant}
-    />
-  );
+  formik?: boolean;
 };
 
-export default CommonTextField;
+class CustomInput extends Component<CustomInputProps> {
+  render() {
+    const { label, name, value, variant = "outlined", onChange, formik, ...props } = this.props;
 
+    if (formik) {
+      return (
+        <Field name={name}>
+          {({ field, meta }: FieldProps) => (
+            <InputStyleWrapper>
+              {label && (
+                <Typography variant="body1" className="label">
+                  {label}
+                </Typography>
+              )}
+              <TextField
+                {...field}
+                {...props}
+                onChange={onChange || field.onChange}
+                variant={variant}
+                error={Boolean(meta.touched && meta.error)}
+                helperText={meta.touched && meta.error ? meta.error : ""}
+              />
+            </InputStyleWrapper>
+          )}
+        </Field>
+      );
+    }
 
-{/* TextField with Error */}
-      <CommonTextField
-        label="Email"
-        placeholder="Enter your email"
-        type="email"
-        error={true}
-        helperText="Invalid email address"
-      />
+    return (
+      <InputStyleWrapper>
+        {label && (
+          <Typography variant="body1" className="label">
+            {label}
+          </Typography>
+        )}
+        <TextField {...props} name={name} value={value} variant={variant} onChange={onChange} />
+      </InputStyleWrapper>
+    );
+  }
+}
+
+const InputStyleWrapper = styled(Box)({
+  "& .label": {
+    fontWeight: 700,
+    lineHeight: "21px",
+    fontSize: "14px",
+    color: colors().darkText,
+    marginBottom: "4px",
+  },
+  "& .MuiFormControl-root": {
+    minHeight: "64px",
+    width: "100%",
+  },
+  "& .MuiOutlinedInput-root": {
+    borderRadius: "8px",
+    backgroundColor: "#FFF",
+  },
+  "& .MuiOutlinedInput-root:not(.Mui-focused):not(.Mui-error) .MuiOutlinedInput-notchedOutline": {
+    borderColor: colors().tableBorder,
+  },
+  "& .MuiInputBase-input": {
+    color: colors().darkText,
+    fontSize: "16px",
+    lineHeight: "24px",
+    fontWeight: "400",
+    padding: "10px 12px",
+    height: "unset",
+  },
+  "& .MuiFormHelperText-root": {
+    fontWeight: 400,
+    fontSize: "12px",
+    lineHeight: "18px",
+    marginLeft: "0",
+    marginTop: "0",
+  },
+});
+
+export default CustomInput;
+
+// use normal custom input
+<CustomInput
+  name="searchMessage"
+  fullWidth
+  className="search__input"
+  onChange={(e) =>{this.setState({search: e.tagret.value}}}
+  InputProps={{
+    startAdornment: (
+      <InputAdornment position="end">
+        <img src={searchIcon} />
+      </InputAdornment>
+    ),
+  }}
+/>
+
+// use formik custom input
+<CustomInput
+    formik
+    name="email"
+    label="New email"
+    placeholder="Enter new email"
+/>
