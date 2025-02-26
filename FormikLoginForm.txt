@@ -1,0 +1,52 @@
+<Formik
+    initialValues={{
+        email: "",
+        password: "",
+    }}
+    validationSchema={this.loginValidationSchema}
+    onSubmit={(values) => this.login(values)}
+>
+    {({ isValid, dirty }) => (
+        <Form>
+                <CustomInput
+                    formik
+                    name="email"
+                    label="New email"
+                    placeholder="Enter new email"
+                />
+                <CustomInput
+                    formik
+                    name="password"
+                    label="Password"
+                    placeholder="Enter password"
+                />
+                <br></br>
+                <Box style={{display: "flex", width: "100%", gap: "16px"}}>
+                    <CommonButton
+                        label="Receive verification code"
+                        type="submit"
+                        onClick={() => {}}
+                        variant="primary"
+                        isDisabled={!isValid || !dirty}
+                    />
+                </Box>
+        </Form>
+    )}
+</Formik>
+
+// export const emailRegex = /^[a-zA-Z0-9]+([._-]?[a-zA-Z0-9]+)*@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+loginValidationSchema = Yup.object({
+    email: Yup.string()
+                .matches(
+                    emailRegex,
+                    "Incorrect email format"
+                )
+                .required('Email is required').nullable(),
+    password: Yup.string()
+                     .required('Password is required').nullable()
+                     .matches(
+                        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,}$/,
+                        "Use at least 8 characters. Include an uppercase, lowercase and a number"
+                      )
+})
