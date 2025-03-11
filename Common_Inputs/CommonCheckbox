@@ -1,0 +1,125 @@
+import React, { Component } from "react";
+import {
+  Checkbox,
+  FormControlLabel,
+  FormGroup,
+  FormHelperText,
+} from "@mui/material";
+import { Box, styled } from "@mui/system";
+import { Field, FieldProps } from "formik";
+import { colors } from "../../../blocks/utilities/src/Colors";
+
+type CustomCheckboxProps = {
+  label?: string;
+  isRequired?: boolean;
+  name: string;
+  checked?: boolean;
+  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  formik?: boolean;
+  helperText?: string;
+};
+
+class CustomCheckbox extends Component<CustomCheckboxProps> {
+  render() {
+    const {
+      label,
+      isRequired,
+      name,
+      checked,
+      onChange,
+      formik,
+      helperText,
+      ...props
+    } = this.props;
+
+    // Formik Mode
+    if (formik) {
+      return (
+        <Field name={name}>
+          {({ field, meta }: FieldProps) => (
+            <FormGroup>
+              <StyledFormControlLabel
+                control={
+                  <Checkbox {...field} checked={field.value} {...props} />
+                }
+                label={
+                  <div className="label-wrapper">
+                    {label} {isRequired && <div className="required">*</div>}
+                  </div>
+                }
+              />
+              {(meta.touched && meta.error) || helperText ? (
+                <StyledBox style={{width : "100%"}}>
+                  <FormHelperText error={meta.touched && Boolean(meta.error)}>
+                    {meta.touched && meta.error ? meta.error : helperText}
+                  </FormHelperText>
+                </StyledBox>
+              ) : null}
+            </FormGroup>
+          )}
+        </Field>
+      );
+    }
+
+    // Normal Mode
+    return (
+      <div>
+        <StyledFormControlLabel
+          control={
+            <Checkbox checked={checked} onChange={onChange} {...props} />
+          }
+          label={
+            <div className="label-wrapper">
+              {label}
+              {isRequired && <span className="required">*</span>}
+            </div>
+          }
+        />
+        {helperText && (
+          <StyledBox style={{width : "100%"}}>
+            <FormHelperText>{helperText}</FormHelperText>
+          </StyledBox>
+        )}
+      </div>
+    );
+  }
+}
+
+export default CustomCheckbox;
+
+const StyledFormControlLabel = styled(FormControlLabel)({
+  "& .label-wrapper": {
+    display: "flex",
+    gap: "2px",
+    color: colors().blue,
+  },
+  "& .MuiCheckbox-root": {
+    "&.Mui-checked": {
+      color: colors().blue,
+    },
+  },
+  "& .lable": {
+    fontSize: "12px",
+    fontFamily: "Poppins",
+  },
+  "& .required": {
+    color: "#EB212A",
+  },
+  "& .MuiSvgIcon-root": {
+    fill: colors().blue,
+  },
+});
+
+const StyledBox = styled(Box)({
+  "& .MuiFormHelperText-root": {
+    fontWeight: 500,
+    fontSize: "12px",
+    lineHeight: "18px",
+    marginLeft: "0",
+    marginTop: "0",
+    fontFamily: "Poppins",
+    "&.Mui-error": {
+      color: colors().required
+    }
+  },
+})
