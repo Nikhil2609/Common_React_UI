@@ -10,7 +10,8 @@
 8) Common Pagination
 9) Common Switch (Styled Switch)
 10) Common Snakebar (toast success/error message)
-11) Formik + Yup Login form (yup validation + Common TextField used )
+11) Common react-toastify package (toast message)
+12) Formik + Yup Login form (yup validation + Common TextField used )
 
 ## Common Inputs Folder
 - Common Input
