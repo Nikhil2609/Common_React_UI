@@ -1,3 +1,79 @@
+// functional component Textfield + password
+
+import {
+    Box,
+    TextField,
+    TextFieldProps,
+    Typography,
+    IconButton,
+    InputAdornment
+} from '@mui/material';
+import { Field, FieldProps } from 'formik';
+import { useState } from 'react';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
+
+type CustomInputProps = TextFieldProps & {
+    label?: string;
+    name: string;
+};
+
+const MUITextField: React.FC<CustomInputProps> = ({
+    name,
+    label,
+    type,
+    ...props
+}) => {
+    const [showPassword, setShowPassword] = useState(false);
+
+    const isPasswordField = type === 'password';
+
+    const togglePasswordVisibility = () => {
+        setShowPassword((prev) => !prev);
+    };
+
+    return (
+        <Field name={name}>
+            {({ field, meta }: FieldProps) => (
+                <Box mb={2}>
+                    {label && <Typography mb={1}>{label}</Typography>}
+                    <TextField
+                        {...field}
+                        {...props}
+                        type={isPasswordField ? (showPassword ? 'text' : 'password') : type}
+                        name={name}
+                        fullWidth
+                        error={Boolean(meta.touched && meta.error)}
+                        InputProps={{
+                            endAdornment: isPasswordField && (
+                                <InputAdornment position="end">
+                                    <IconButton onClick={togglePasswordVisibility} edge="end">
+                                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                                    </IconButton>
+                                </InputAdornment>
+                            )
+                        }}
+                    />
+                    {meta.touched && meta.error && (
+                        <Typography color="error" variant="body2">
+                            {meta.error as string}
+                        </Typography>
+                    )}
+                </Box>
+            )}
+        </Field>
+    );
+};
+
+export default MUITextField;
+
+
+
+
+
+
+
+// Class component with formik + normal field
+
 import React, { Component } from "react";
 import { Field, FieldProps } from "formik";
 import { TextField, TextFieldProps, Box, Typography, styled } from "@material-ui/core";
